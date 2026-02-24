@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2, p {
+  margin: 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #4d6eda;
+}
+
+
+ul li a:hover {
+  background-color: #4441d3;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+ul.topnav li a.active {background-color: #04AA6D;}
+
+ul.topnav li.right {float: right;}
+
+@media screen and (max-width: 600px) {
+  ul.topnav li.right, 
+  ul.topnav li {float: none;}
+}
+
+
+
+style
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* The big bar at the top */
+  .navbar {
+    background: #222;
+    color: white;
+    padding: 15px 25px;
+
+    /* Put logo on the left and links on the right */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: relative;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  /* This checkbox is the hidden "switch"
+     that controls the mobile menu opening */
+  #menu-toggle {
+    display: none;
+  }
+
+  /* The hamburger button (☰)
+     — only shows on small screens */
+  .hamburger {
+    font-size: 2rem;
+    cursor: pointer;
+    display: none; /* hidden on big screens */
+  }
+
+  /* The menu items in a horizontal line */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+  }
+
+  .nav-links a:hover {
+    color: #4fc3f7;
+  }
+
+  /* When the screen becomes small (phone/tablet),
+     we change how the navbar works */
+  @media (max-width: 768px) {
+
+    /* Show the ☰ button */
+    .hamburger {
+      display: block;
+    }
+
+    /* Hide the menu links at first */
+    .nav-links {
+      display: none;
+      flex-direction: column; /* stack vertically */
+      background: #222;
+      width: 100%;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    /* When checkbox is checked, show the menu.
+       This is what makes the mobile dropdown work. */
+    #menu-toggle:checked ~ .nav-links {
+      display: flex;
+    }
+
+    /* Add spacing in the vertical menu */
+    .nav-links li {
+      padding: 10px 0;
+    }
+  }
+</style>
+
+<nav class="navbar">
+  <div class="logo">MySite</div>
+
+  <!-- Hidden switch that controls the mobile menu -->
+  <input type="checkbox" id="menu-toggle">
+
+  <!-- The button users tap on small screens -->
+  <label for="menu-toggle" class="hamburger">☰</label>
+
+  <!-- These are the menu links (horizontal on big screens,
+       dropdown on small screens) -->
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+
+
+
+</style>
+</head>
+
+<style>
+    ul li a{
+  float: right;
+}
+
+ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+ul li a:hover {
+  background-color: #4441d3;
+}
+
+ul li b {
+     display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+ul li b{
+    float: left;
+}
+
+
+
+
+
+</style>
+
+</html>
