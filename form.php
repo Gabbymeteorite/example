@@ -13,9 +13,11 @@
                 font-family: cursive;
                 font-size: xx-large;
             }
+            
         </style>
     </body>
     <form>
+<!-- edit bby mr corrd-->
         <Fieldset>
             <legend>information</legend>
         <h3>Information:</h3>
