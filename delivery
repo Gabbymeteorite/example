@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EatNGo - Fast Food Ordering + Delivery Driver & Tracking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-yellow: #FFD700;
+            --dark-yellow: #FFC400;
+            --light-yellow: #FFF9C4;
+            --accent-red: #FF5252;
+            --dark-gray: #333333;
+            --light-gray: #F5F5F5;
+            --accent-blue: #2196F3;
+            --dark-blue: #1976D2;
+            --delivery-green: #4CAF50;
+            --driver-purple: #9C27B0;
+        }
+        
+        body {
+            background-color: #fff;
+            color: var(--dark-gray);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--primary-yellow);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .cart-icon {
+            position: relative;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-red);
+            color: white;
+            font-size: 0.8rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .admin-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-btn:hover {
+            background-color: var(--dark-blue);
+        }
+
+        /* Delivery Toggle */
+        .delivery-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .delivery-toggle i {
+            color: var(--delivery-green);
+        }
+        .delivery-toggle label {
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .delivery-toggle input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--delivery-green);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+        
+        /* Menu Section */
+        .menu-section {
+            flex: 3;
+            min-width: 300px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-yellow);
+        }
+        
+        .category-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            min-width: 80px;
+        }
+        
+        .category-tab.active {
+            background-color: var(--primary-yellow);
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .menu-item {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+            position: relative;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-image {
+            height: 180px;
+            background-color: var(--light-yellow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+        }
+        
+        .item-details {
+            padding: 20px;
+        }
+        
+        .item-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .item-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary-yellow);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--dark-yellow);
+        }
+        
+        /* Cart Section */
+        .cart-section {
+            flex: 2;
+            min-width: 300px;
+            background-color: var(--light-gray);
+            border-radius: 15px;
+            padding: 25px;
+            height: fit-content;
+        }
+        
+        .cart-items {
+            min-height: 200px;
+            margin-bottom: 25px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .cart-item-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            font-weight: 600;
+        }
+        
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            background-color: var(--primary-yellow);
+        }
+        
+        .cart-item-quantity {
+            font-weight: 600;
+            min-width: 25px;
+            text-align: center;
+        }
+        
+        .remove-item {
+            color: var(--accent-red);
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+        }
+        
+        .cart-empty i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .cart-summary {
+            border-top: 2px solid #ddd;
+            padding-top: 20px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkout-btn:hover {
+            background-color: #e53935;
+        }
+
+        /* DRIVER & TRACKING SECTION - NOW VISIBLE */
+        .driver-tracking-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--driver-purple);
+        }
+        
+        .driver-tracking-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--driver-purple);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .driver-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .driver-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--driver-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+        
+        .driver-details p {
+            margin: 5px 0;
+        }
+        
+        .driver-name {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .tracking-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0 20px;
+            position: relative;
+        }
+        
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ddd;
+            z-index: 1;
+        }
+        
+        .step {
+            position: relative;
+            z-index: 2;
+            background: white;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            color: white;
+        }
+        
+        .step.active .step-icon {
+            background: var(--delivery-green);
+            box-shadow: 0 0 0 4px #c8e6c9;
+        }
+        
+        .step.completed .step-icon {
+            background: var(--delivery-green);
+        }
+        
+        .step-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .update-time {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+        
+        .driver-contact {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Admin Modal */
+        .admin-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .admin-panel {
+            background-color: white;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        
+        .modal-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .close-modal {
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .admin-content {
+            padding: 30px;
+        }
+        
+        .form-section {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--dark-gray);
+        }
+        
+        /* Order Modal */
+        .order-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .order-confirm {
+            background-color: white;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .order-success {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .order-success i {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        .order-success h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .order-details {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .order-total {
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+        }
+        
+        .footer-info p {
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .footer-social a {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-hamburger"></i>
+                <h1>EatNGo</h1>
+            </div>
+            <div class="header-actions">
+                <div class="delivery-toggle">
+                    <i class="fas fa-motorcycle"></i>
+                    <label for="deliverySwitch">Delivery</label>
+                    <input type="checkbox" id="deliverySwitch" checked>
+                </div>
+                <button class="admin-btn" id="adminBtn">
+                    <i class="fas fa-cog"></i> Admin
+                </button>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <!-- Menu Section -->
+        <section class="menu-section">
+            <h2 class="section-title">Our Delicious Menu</h2>
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all">All Items</div>
+                <div class="category-tab" data-category="burgers">Burgers</div>
+                <div class="category-tab" data-category="fries">Fries</div>
+                <div class="category-tab" data-category="fastfood">Fast Food</div>
+                <div class="category-tab" data-category="drinks">Drinks</div>
+                <div class="category-tab" data-category="desserts">Desserts</div>
+            </div>
+            <div class="menu-items" id="menuItems"></div>
+        </section>
+        
+        <!-- Cart & Tracking Section -->
+        <section class="cart-section">
+            <h2 class="section-title">Your Order</h2>
+            <div class="cart-items" id="cartItems">
+                <div class="cart-empty" id="emptyCart">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            
+            <div class="cart-summary" id="cartSummary" style="display: none;">
+                <div class="summary-row"><span>Subtotal</span><span id="subtotal">₱0.00</span></div>
+                <div class="summary-row"><span>Tax (10%)</span><span id="tax">₱0.00</span></div>
+                <div class="summary-row" id="deliveryFeeRow"><span>Delivery Fee</span><span>₱2.99</span></div>
+                <div class="summary-row summary-total"><span>Total</span><span id="total">₱0.00</span></div>
+                <button class="checkout-btn" id="checkoutBtn"><i class="fas fa-credit-card"></i> Checkout</button>
+            </div>
+
+            <!-- DELIVERY DRIVER & TRACKING SECTION - ALWAYS VISIBLE WHEN DELIVERY ENABLED -->
+            <div class="driver-tracking-section" id="driverTrackingSection" style="display: none;">
+                <h3><i class="fas fa-map-marked-alt"></i> Live Driver Tracking</h3>
+                <div class="driver-card" id="driverCard">
+                    <div class="driver-avatar">
+                        <i class="fas fa-user-ninja"></i>
+                    </div>
+                    <div class="driver-details">
+                        <p class="driver-name" id="driverName">--</p>
+                        <p><i class="fas fa-motorcycle"></i> <span id="driverDistance">--</span> away</p>
+                        <p><i class="fas fa-star" style="color: gold;"></i> <span id="driverRating">4.9</span> (342 trips)</p>
+                    </div>
+                </div>
+                
+                <div class="tracking-steps" id="trackSteps">
+                    <div class="step completed" data-step="1">
+                        <div class="step-icon"><i class="fas fa-check"></i></div>
+                        <div class="step-label">Order Placed</div>
+                    </div>
+                    <div class="step active" data-step="2">
+                        <div class="step-icon"><i class="fas fa-fire"></i></div>
+                        <div class="step-label">Preparing</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-icon"><i class="fas fa-box-open"></i></div>
+                        <div class="step-label">Picked Up</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-icon"><i class="fas fa-home"></i></div>
+                        <div class="step-label">Delivered</div>
+                    </div>
+                </div>
+                
+                <div class="update-time" id="trackingUpdateTime">
+                    <i class="far fa-clock"></i> Last update: waiting for order...
+                </div>
+                
+                <div class="driver-contact" id="driverContact">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Driver contact: <span id="driverPhone">+63 912 345 6789</span></span>
+                </div>
+                
+                <p style="font-size:0.8rem; margin-top:10px; color:#666;">
+                    <i class="fas fa-info-circle"></i> Tracking updates every 6 seconds (simulated)
+                </p>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Admin Modal -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-panel">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <div class="close-modal" id="closeAdminModal">&times;</div>
+            </div>
+            <div class="admin-content">
+                <div class="form-section">
+                    <h3 class="form-title"><i class="fas fa-plus-circle"></i> Add Menu Item</h3>
+                    <form id="addItemForm">
+                        <div class="form-row">
+                            <div class="form-group"><label>Name</label><input type="text" id="itemName" required></div>
+                            <div class="form-group"><label>Price (₱)</label><input type="number" id="itemPrice" step="0.01" required></div>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea id="itemDescription" rows="2" required></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Category</label>
+                                <select id="itemCategory" required>
+                                    <option value="burgers">Burgers</option>
+                                    <option value="fries">Fries</option>
+                                    <option value="fastfood">Fast Food</option>
+                                    <option value="drinks">Drinks</option>
+                                    <option value="desserts">Desserts</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label>Icon</label><input type="text" id="itemIcon" value="fas fa-utensils"></div>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Add</button>
+                            <button type="button" class="btn btn-secondary" id="resetFormBtn">Clear</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-section">
+                    <h3 class="form-title"><i class="fas fa-list"></i> Current Menu (<span id="itemCount">0</span>)</h3>
+                    <div id="adminMenuList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Modal -->
+    <div class="order-modal" id="orderModal">
+        <div class="order-confirm">
+            <div class="modal-header">
+                <h2>Order Confirmation</h2>
+                <div class="close-modal" id="closeOrderModal">&times;</div>
+            </div>
+            <div class="order-success">
+                <i class="fas fa-check-circle"></i>
+                <h3>Order Placed!</h3>
+                <p id="orderConfirmMsg">Your food is being prepared</p>
+                <div class="order-details" id="orderDetails"></div>
+                <button class="checkout-btn" id="newOrderBtn">Place New Order</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">EatNGo</div>
+            <div class="footer-info">
+                <p><i class="fas fa-clock"></i> 10:00 AM - 11:00 PM</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Data
+        let menuItems = JSON.parse(localStorage.getItem('eatngo_menu')) || [
+            { id: 1, name: "Classic Burger", description: "Juicy beef patty", price: 249.99, category: "burgers", icon: "fas fa-hamburger" },
+            { id: 2, name: "Cheeseburger", description: "Double cheese", price: 299.99, category: "burgers", icon: "fas fa-cheese" },
+            { id: 4, name: "Classic Fries", description: "Crispy golden", price: 99.99, category: "fries", icon: "fas fa-potato" },
+            { id: 17, name: "Coca-Cola", description: "Ice cold", price: 59.99, category: "drinks", icon: "fas fa-wine-bottle" },
+        ];
+        let cart = [];
+        let trackingInterval = null;
+
+        // DOM elements
+        const cartCount = document.getElementById('cartCount');
+        const cartItemsDiv = document.getElementById('cartItems');
+        const cartSummary = document.getElementById('cartSummary');
+        const emptyCart = document.getElementById('emptyCart');
+        const subtotalSpan = document.getElementById('subtotal');
+        const taxSpan = document.getElementById('tax');
+        const totalSpan = document.getElementById('total');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const deliverySwitch = document.getElementById('deliverySwitch');
+        const deliveryFeeRow = document.getElementById('deliveryFeeRow');
+        const driverSection = document.getElementById('driverTrackingSection');
+        const driverName = document.getElementById('driverName');
+        const driverDistance = document.getElementById('driverDistance');
+        const driverRating = document.getElementById('driverRating');
+        const driverPhone = document.getElementById('driverPhone');
+        const trackSteps = document.getElementById('trackSteps');
+        const trackingTime = document.getElementById('trackingUpdateTime');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            saveMenu();
+            loadMenu();
+            loadAdminList();
+            setupListeners();
+            updateCartDisplay();
+            updateDeliveryFee();
+        });
+
+        function saveMenu() {
+            localStorage.setItem('eatngo_menu', JSON.stringify(menuItems));
+        }
+
+        // Menu rendering
+        function loadMenu() {
+            const container = document.getElementById('menuItems');
+            container.innerHTML = '';
+            menuItems.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'menu-item';
+                el.dataset.category = item.category;
+                el.innerHTML = `
+                    <div class="item-image"><i class="${item.icon}"></i></div>
+                    <div class="item-details">
+                        <h3 class="item-name">${item.name}</h3>
+                        <p class="item-description">${item.description}</p>
+                        <div class="item-footer">
+                            <div class="item-price">₱${item.price.toFixed(2)}</div>
+                            <button class="add-to-cart" data-id="${item.id}"><i class="fas fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    const id = parseInt(e.currentTarget.dataset.id);
+                    addToCart(id);
+                });
+            });
+        }
+
+        function loadAdminList() {
+            const list = document.getElementById('adminMenuList');
+            document.getElementById('itemCount').textContent = menuItems.length;
+            list.innerHTML = menuItems.map(item => `
+                <div style="display:flex; justify-content:space-between; padding:8px; background:white; margin:5px 0; border-radius:5px;">
+                    <span><i class="${item.icon}"></i> ${item.name} - ₱${item.price.toFixed(2)}</span>
+                    <button class="delete-item" data-id="${item.id}" style="background:var(--accent-red); color:white; border:none; border-radius:5px; padding:5px 10px;">Delete</button>
+                </div>
+            `).join('');
+            document.querySelectorAll('.delete-item').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    const id = parseInt(e.currentTarget.dataset.id);
+                    if (confirm('Delete item?')) {
+                        menuItems = menuItems.filter(i => i.id !== id);
+                        saveMenu();
+                        loadMenu();
+                        loadAdminList();
+                        cart = cart.filter(i => i.id !== id);
+                        updateCartDisplay();
+                    }
+                });
+            });
+        }
+
+        // Cart functions
+        function addToCart(id) {
+            const item = menuItems.find(i => i.id === id);
+            const existing = cart.find(i => i.id === id);
+            if (existing) existing.quantity++;
+            else cart.push({ ...item, quantity: 1 });
+            updateCartDisplay();
+            showNotif(`${item.name} added`);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartDisplay();
+        }
+
+        function updateQuantity(id, delta) {
+            const idx = cart.findIndex(i => i.id === id);
+            if (idx === -1) return;
+            cart[idx].quantity += delta;
+            if (cart[idx].quantity < 1) removeFromCart(id);
+            else updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const totalItems = cart.reduce((s,i) => s + i.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            if (!cart.length) {
+                emptyCart.style.display = 'block';
+                cartSummary.style.display = 'none';
+                return;
+            }
+            emptyCart.style.display = 'none';
+            cartSummary.style.display = 'block';
+            
+            // Render cart items
+            cartItemsDiv.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div><h4>${item.name}</h4><div>₱${item.price.toFixed(2)}</div></div>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                        <span class="cart-item-quantity">${item.quantity}</span>
+                        <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.quantity-btn.minus').forEach(b => b.addEventListener('click', e => updateQuantity(parseInt(e.currentTarget.dataset.id), -1)));
+            document.querySelectorAll('.quantity-btn.plus').forEach(b => b.addEventListener('click', e => updateQuantity(parseInt(e.currentTarget.dataset.id), 1)));
+            document.querySelectorAll('.remove-item').forEach(b => b.addEventListener('click', e => removeFromCart(parseInt(e.currentTarget.dataset.id))));
+            
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            const sub = cart.reduce((s,i) => s + i.price * i.quantity, 0);
+            const tax = sub * 0.10;
+            const delivery = deliverySwitch.checked ? 2.99 : 0;
+            const total = sub + tax + delivery;
+            subtotalSpan.textContent = `₱${sub.toFixed(2)}`;
+            taxSpan.textContent = `₱${tax.toFixed(2)}`;
+            totalSpan.textContent = `₱${total.toFixed(2)}`;
+            deliveryFeeRow.style.display = deliverySwitch.checked ? 'flex' : 'none';
+        }
+
+        function updateDeliveryFee() {
+            calculateTotals();
+            // Show/hide driver section based on delivery toggle
+            if (deliverySwitch.checked) {
+                if (cart.length > 0) driverSection.style.display = 'block';
+                else driverSection.style.display = 'none';
+            } else {
+                driverSection.style.display = 'none';
+            }
+        }
+
+        deliverySwitch.addEventListener('change', updateDeliveryFee);
+
+        // Checkout & Tracking
+        checkoutBtn.addEventListener('click', function() {
+            if (!cart.length) return;
+            
+            // Show order modal
+            const sub = cart.reduce((s,i) => s + i.price * i.quantity, 0);
+            const tax = sub * 0.10;
+            const delivery = deliverySwitch.checked ? 2.99 : 0;
+            const total = sub + tax + delivery;
+            
+            let detailsHTML = cart.map(i => `<div class="order-item"><span>${i.name} x${i.quantity}</span><span>₱${(i.price*i.quantity).toFixed(2)}</span></div>`).join('');
+            detailsHTML += `<div class="order-item"><span>Subtotal</span><span>₱${sub.toFixed(2)}</span></div>`;
+            detailsHTML += `<div class="order-item"><span>Tax</span><span>₱${tax.toFixed(2)}</span></div>`;
+            if (deliverySwitch.checked) detailsHTML += `<div class="order-item"><span>Delivery</span><span>₱2.99</span></div>`;
+            detailsHTML += `<div class="order-item order-total"><span>Total</span><span>₱${total.toFixed(2)}</span></div>`;
+            document.getElementById('orderDetails').innerHTML = detailsHTML;
+            
+            if (deliverySwitch.checked) {
+                document.getElementById('orderConfirmMsg').innerText = 'Driver assigned! Track your order below.';
+                startDriverTracking();
+            } else {
+                document.getElementById('orderConfirmMsg').innerText = 'Your order is ready for pickup.';
+                driverSection.style.display = 'none';
+            }
+            
+            document.getElementById('orderModal').style.display = 'flex';
+        });
+
+        function startDriverTracking() {
+            // Show driver section
+            driverSection.style.display = 'block';
+            
+            // Random driver data
+            const names = ['Alex Rider', 'Sam Wong', 'Jamie Cruz', 'Taylor Kim', 'Jordan Lee'];
+            const phones = ['+63 912 345 6789', '+63 917 890 1234', '+63 915 678 4321'];
+            driverName.textContent = names[Math.floor(Math.random() * names.length)];
+            driverPhone.textContent = phones[Math.floor(Math.random() * phones.length)];
+            driverDistance.textContent = (Math.random() * 1.5 + 0.3).toFixed(1) + ' km';
+            driverRating.textContent = (4.7 + Math.random() * 0.3).toFixed(1);
+            
+            // Reset steps
+            document.querySelectorAll('.step').forEach((s, idx) => {
+                s.classList.remove('completed', 'active');
+                if (idx === 0) s.classList.add('completed');
+                else if (idx === 1) s.classList.add('active');
+            });
+            
+            trackingTime.innerHTML = '<i class="far fa-clock"></i> Last update: just now';
+            
+            // Simulate tracking updates
+            if (trackingInterval) clearInterval(trackingInterval);
+            let step = 2;
+            trackingInterval = setInterval(() => {
+                const steps = document.querySelectorAll('.step');
+                if (step >= 4) {
+                    clearInterval(trackingInterval);
+                    trackingTime.innerHTML = '<i class="far fa-clock"></i> Delivered at ' + new Date().toLocaleTimeString();
+                    return;
+                }
+                steps[step-1].classList.remove('active');
+                steps[step-1].classList.add('completed');
+                step++;
+                if (step <= 4) steps[step-1].classList.add('active');
+                
+                // Update distance
+                let d = parseFloat(driverDistance.textContent);
+                d = Math.max(0.1, d - 0.2).toFixed(1);
+                driverDistance.textContent = d + ' km';
+                
+                trackingTime.innerHTML = '<i class="far fa-clock"></i> Updated at ' + new Date().toLocaleTimeString();
+            }, 6000);
+        }
+
+        // Close modals
+        document.getElementById('closeOrderModal').addEventListener('click', () => {
+            document.getElementById('orderModal').style.display = 'none';
+        });
+        document.getElementById('newOrderBtn').addEventListener('click', () => {
+            document.getElementById('orderModal').style.display = 'none';
+            cart = [];
+            updateCartDisplay();
+            if (trackingInterval) clearInterval(trackingInterval);
+            driverSection.style.display = 'none';
+        });
+
+        // Admin modal
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            document.getElementById('adminModal').style.display = 'flex';
+        });
+        document.getElementById('closeAdminModal').addEventListener('click', () => {
+            document.getElementById('adminModal').style.display = 'none';
+        });
+        document.getElementById('resetFormBtn').addEventListener('click', () => {
+            document.getElementById('addItemForm').reset();
+        });
+        document.getElementById('addItemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newItem = {
+                id: menuItems.length ? Math.max(...menuItems.map(i=>i.id)) + 1 : 1,
+                name: document.getElementById('itemName').value,
+                price: parseFloat(document.getElementById('itemPrice').value),
+                description: document.getElementById('itemDescription').value,
+                category: document.getElementById('itemCategory').value,
+                icon: document.getElementById('itemIcon').value
+            };
+            menuItems.push(newItem);
+            saveMenu();
+            loadMenu();
+            loadAdminList();
+            e.target.reset();
+            document.getElementById('itemIcon').value = 'fas fa-utensils';
+        });
+
+        // Filter categories
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const cat = this.dataset.category;
+                document.querySelectorAll('.menu-item').forEach(el => {
+                    el.style.display = (cat === 'all' || el.dataset.category === cat) ? 'block' : 'none';
+                });
+            });
+        });
+
+        function showNotif(msg) {
+            const n = document.createElement('div');
+            n.style.cssText = 'position:fixed; top:100px; right:20px; background:var(--primary-yellow); padding:15px; border-radius:8px; font-weight:600; z-index:2000;';
+            n.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
+        }
+    </script>
+</body>
+</html>
